@@ -13,6 +13,7 @@
 
 # Directories
 /.vscode/
+/.conf/
 **/dist/
 **/venv/
 **/.venv/

@@ -13,7 +13,12 @@
 
 """Module for interacting with csv-config."""
 
-from typing import Optional
+import os
+from typing import IO, List, Optional
+
+
+class CfgFileError(Exception):
+    """Raised instead of 'OSError' during config file interaction."""
 
 
 class Config:
@@ -21,17 +26,24 @@ class Config:
 
     FILE_LOC = "~/AppData/Local/python-ssdk"
 
-    def __init__(self, fp: Optional[str] = None) -> None:
-        self.fp = self.FILE_LOC if fp is None else fp
-        self._check_cfg_file()
+    def __init__(self, file: Optional[str] = None) -> None:
+        self.file = self.FILE_LOC if file is None else file
 
-    def read(self):
+    def read(self) -> List[str]:
         """Read list of Steam Library Directories from config file."""
-        ...
+        with self._open() as cfg_file:
+            lib_dirs = [
+                line.strip() for line in cfg_file.readlines()
+                if line and not line.startswith("#")
+            ]
+        return lib_dirs
 
-    def write(self):
+    def write(self, *lib_dirs: str):
         """Write list of Steam Library Directories from config file."""
-        ...
+        if not os.path.isdir(cfg_dir := os.path.dirname(self.file)):
+            os.makedirs(cfg_dir)
+        with self._open("w") as cfg_file:
+            cfg_file.write("\n".join(lib_dirs))
 
     def remove(self):
         """Remove Steam Library Directory from config file."""
@@ -41,6 +53,18 @@ class Config:
         """Add Steam Library Directory to config file."""
         ...
 
-    def _check_cfg_file(self):
-        """Check whether config dir and file exist."""
-        ...
+    def _open(self, filemode="r", encoding="utf-8") -> IO:
+        """Open config file with specified mode and encoding."""
+        try:
+            return open(self.file, filemode, encoding=encoding)
+        except OSError as exc:
+            raise CfgFileError("unable to access config", self.file) from exc
+
+if __name__ == "__main__":
+    cfg = Config(".conf/test.csv")
+
+    # cfg.write(r"G:\SteamLibrary", r"D:\SteamLibrary")
+
+    libraries = cfg.read()
+    print(libraries)
+ 
