@@ -27,11 +27,9 @@ class ConfigFileError(Exception):
 class Config:
     """Config Handler."""
 
-    FILE_LOC = "~/AppData/Local/python-ssdk"
-
-    def __init__(self, file: Optional[str] = None) -> None:
+    def __init__(self, file: str) -> None:
         """Initialize handler for given config file."""
-        self.file = self.FILE_LOC if file is None else file
+        self.file = file
 
     def read(self) -> List[SteamLibrary]:
         """Read list of Steam Libraries from config file."""
