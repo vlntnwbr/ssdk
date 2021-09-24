@@ -11,7 +11,7 @@
 #   official translations of the licence in another language of the EU.
 ##
 
-"""Module for interacting with csv-config."""
+"""Module for interacting with config."""
 
 import os
 from typing import IO, List, Optional, Union
@@ -83,6 +83,8 @@ class Config:
 
     def _read(self) -> List[str]:
         """Read list of Steam Library Directories from config file."""
+        if not os.path.isfile(self.file):
+            raise ConfigFileError("config file doesn't exist", self.file)
         with self._open() as cfg_file:
             lib_dirs = [
                 line.strip() for line in cfg_file.readlines()
@@ -93,7 +95,10 @@ class Config:
     def _write(self, lib_dirs: List[str]):
         """Write list of Steam Library Directories to config file."""
         if not os.path.isdir(cfg_dir := os.path.dirname(self.file)):
-            os.makedirs(cfg_dir)
+            try:
+                os.makedirs(cfg_dir)
+            except OSError as exc:
+                raise ConfigFileError("unable to create config dir", cfg_dir) from exc
         with self._open("w") as cfg_file:
             cfg_file.write("\n".join(lib_dirs))
 
@@ -103,16 +108,4 @@ class Config:
         if isinstance(lib_dirs, list):
             return lib_dirs
         return [lib_dirs]
-
-
-if __name__ == "__main__":
-    cfg = Config(".conf/test.csv")
-
-    # cfg.write([r"G:\SteamLibrary", r"D:\SteamLibrary"], False)
-    # cfg.remove(r"D:\SteamLibrary")
-    # cfg.add(r"D:\SteamLibrary")
-    # cfg.add([r"G:\SteamLibrary", r"C:\Program Files (x86)\Steam\steamapps"])
-
-    libraries = cfg.read()
-    print(libraries)
- 
+    
