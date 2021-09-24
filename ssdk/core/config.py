@@ -16,11 +16,12 @@
 import os
 from typing import IO, List, Optional, Union
 
+from .models import SteamLibrary
 from .utils import get_abspath
 
 
-class CfgFileError(Exception):
-    """Raised instead of 'OSError' during config file interaction."""
+class ConfigFileError(Exception):
+    """Exception for interacting with config file."""
 
 
 class Config:
@@ -32,14 +33,18 @@ class Config:
         """Initialize handler for given config file."""
         self.file = self.FILE_LOC if file is None else file
 
-    def read(self):  # TODO: Return Typing
+    def read(self) -> List[SteamLibrary]:
         """Read list of Steam Libraries from config file."""
-        ...
+        return [SteamLibrary(lib) for lib in self._read()]
 
-    def write(self, lib_dirs: Union[str, List[str]], overwrite: bool = True) -> None:
+    def write(
+        self,
+        lib_dirs: Union[str, List[str]],
+        overwrite_existing: bool = True
+    ) -> None:
         """Write list of Steam Library Directories to config file."""
-        if os.path.isfile(self.file) and not overwrite:
-            raise CfgFileError("config already exists", self.file)
+        if os.path.isfile(self.file) and not overwrite_existing:
+            raise ConfigFileError("config file already exists", self.file)
         libs = [get_abspath(lib) for lib in self._get_lib_dir_list(lib_dirs)]
         self._write(libs)
 
@@ -74,7 +79,7 @@ class Config:
         try:
             return open(self.file, filemode, encoding=encoding)
         except OSError as exc:
-            raise CfgFileError("unable to access config", self.file) from exc
+            raise ConfigFileError("unable to access config", self.file) from exc
 
     def _read(self) -> List[str]:
         """Read list of Steam Library Directories from config file."""
@@ -92,7 +97,8 @@ class Config:
         with self._open("w") as cfg_file:
             cfg_file.write("\n".join(lib_dirs))
 
-    def _get_lib_dir_list(self, lib_dirs: Union[str, List[str]]) -> List[str]:
+    @staticmethod
+    def _get_lib_dir_list(lib_dirs: Union[str, List[str]]) -> List[str]:
         """Return lib_dirs as single element list if given as str."""
         if isinstance(lib_dirs, list):
             return lib_dirs
@@ -102,11 +108,11 @@ class Config:
 if __name__ == "__main__":
     cfg = Config(".conf/test.csv")
 
-    # cfg.write([r"G:\SteamLibrary", r"D:\SteamLibrary"])
+    # cfg.write([r"G:\SteamLibrary", r"D:\SteamLibrary"], False)
     # cfg.remove(r"D:\SteamLibrary")
     # cfg.add(r"D:\SteamLibrary")
     # cfg.add([r"G:\SteamLibrary", r"C:\Program Files (x86)\Steam\steamapps"])
 
-    # libraries = cfg.read()
-    # print(libraries)
+    libraries = cfg.read()
+    print(libraries)
  
