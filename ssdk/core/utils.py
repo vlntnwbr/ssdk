@@ -13,7 +13,17 @@
 
 """Utilities for steam-scheduled-download-killer."""
 
+import argparse
 import os
+
+
+class OneLineHelpFormatter(argparse.RawTextHelpFormatter):
+    """Extension for argparse.RawTextHelpFormatter."""
+
+    def __init__(self, *args, **kwargs) -> None:
+        """Initialize RawTextHelpFormatter with increased line length."""
+        super().__init__(*args, **kwargs)
+        self._max_help_position = 999
 
 
 def get_abspath(path: str) -> str:
