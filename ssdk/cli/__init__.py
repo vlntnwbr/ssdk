@@ -11,4 +11,7 @@
 #   official translations of the licence in another language of the EU.
 ##
 
-"""Entrypoints for steam-scheduled-download-killer."""
+"""Command line interface for steam-scheduled-download-killer."""
+
+SSDK_MAIN = "ssdk"
+SSDK_LIB = SSDK_MAIN + "-lib"
