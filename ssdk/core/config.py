@@ -63,7 +63,6 @@ class Config:
             else:
                 libs.append(lib_path)
                 print(f"Adding '{lib_path}' to config")
-        
         if libs:
             self._write(libs)
             print(f"Created config file at '{self.file}'")
