@@ -98,7 +98,6 @@ def main() -> None:
             cfg.remove(args.libraries)
         elif cmd == "make":
             cfg.write(args.libraries, args.ignore)
-            print(f"Created config file at '{args.config}'")
         elif cmd == "list":
             print("\n".join(str(lib) for lib in cfg.read()))
     except ConfigFileError as exc:

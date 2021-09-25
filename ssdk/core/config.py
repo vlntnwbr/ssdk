@@ -55,8 +55,18 @@ class Config:
         """Write list of Steam Library Directories to config file."""
         if os.path.isfile(self.file) and not overwrite_existing:
             raise ConfigFileError("config file already exists", self.file)
-        libs = [get_abspath(lib) for lib in self._get_lib_dir_list(lib_dirs)]
-        self._write(libs)
+        libs = []
+        for lib in self._get_lib_dir_list(lib_dirs):
+            lib_path = get_abspath(lib)
+            if not os.path.isdir(lib_path):
+                print(f"'{lib_path}' is not a directory")
+            else:
+                libs.append(lib_path)
+                print(f"Adding '{lib_path}' to config")
+        
+        if libs:
+            self._write(libs)
+            print(f"Created config file at '{self.file}'")
 
     def remove(self, lib_dirs: Union[str, List[str]]):
         """Remove Steam Library Directory from config file."""
@@ -79,6 +89,8 @@ class Config:
             lib_path = get_abspath(lib)
             if lib_path in cfg_libs:
                 print(f"'{lib_path}' is already in config")
+            elif not os.path.isdir(lib_path):
+                print(f"'{lib_path}' is not a directory")
             else:
                 cfg_libs.append(lib_path)
                 print(f"Adding '{lib_path}' to config")

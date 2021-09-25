@@ -21,7 +21,7 @@ class OneLineHelpFormatter(argparse.RawTextHelpFormatter):
     """Extension for argparse.RawTextHelpFormatter."""
 
     def __init__(self, *args, **kwargs) -> None:
-        """Initialize RawTextHelpFormatter with increased line length."""
+        """Initialize RawTextHelpFormatter with greater line length."""
         super().__init__(*args, **kwargs)
         self._max_help_position = 999
 
