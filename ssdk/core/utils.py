@@ -17,6 +17,24 @@ import argparse
 import os
 
 
+class BaseArgumentParser(argparse.ArgumentParser):
+    """Command Line Parser with attribute for config file."""
+
+    def __init__(self, prog: str, desc: str, epilog: str):
+        """Initialize the argparse.Argumentparser and add arguments."""
+        super().__init__(
+            prog=prog,
+            description=desc,
+            epilog=epilog,
+            formatter_class=OneLineHelpFormatter
+        )
+        self.add_argument(
+            "-c", "--config",
+            help="path to config file containing Steam Library Folder(s)",
+            default=os.path.expanduser(r"~\AppData\Local\python-ssdk\ssdk.cfg")
+        )
+
+
 class OneLineHelpFormatter(argparse.RawTextHelpFormatter):
     """Extension for argparse.RawTextHelpFormatter."""
 

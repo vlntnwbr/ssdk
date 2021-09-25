@@ -14,15 +14,14 @@
 """Parser and entry point for ssdk-lib."""
 
 import argparse
-import os
 import sys
 
 from . import SSDK_MAIN, SSDK_LIB
 from ..config import Config, ConfigFileError
-from ..core.utils import OneLineHelpFormatter
+from ..core.utils import BaseArgumentParser
 
 
-class SsdkLibParser(argparse.ArgumentParser):
+class SsdkLibParser(BaseArgumentParser):
     """Command Line Parser for ssdk-lib entry point."""
 
     ALLOWED_COMMANDS = {
@@ -40,14 +39,8 @@ class SsdkLibParser(argparse.ArgumentParser):
         )
         super().__init__(
             prog=SSDK_LIB,
-            description=desc,
+            desc=desc,
             epilog=self.get_epilog(),
-            formatter_class=OneLineHelpFormatter
-        )
-        self.add_argument(
-            "-c", "--config",
-            help="path to config file containing Steam Library Folder(s)",
-            default=os.path.expanduser(r"~\AppData\Local\python-ssdk\ssdk.cfg")
         )
         self.add_argument(
             "--ignore-existing",
