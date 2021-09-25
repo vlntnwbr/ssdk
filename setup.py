@@ -13,33 +13,39 @@
 
 """Setup script."""
 
-import subprocess
+import subprocess  # nosec
 from os import path
+from types import FunctionType
 from typing import List, TextIO
 
 from setuptools import find_packages, setup
 
-from hanser_py_library import MAIN_NAME, MAIN_DESC
+from ssdk.cli import SSDK_LIB, lib
 
-REQUIREMENTS_TXT = "requirements.txt"
 HEREDIR = path.abspath(path.dirname(__file__))
 
-PROG = "hanser-py-library"
-VERSION = "0.3.4"
-GITHUB = "https://github.com/vlntnwbr/HanserPyLibrary"
+PROG = "steam-scheduled-download-killer"
+DESC = "Set update priority for all Steam games to avoid scheduled downloads."
+VERSION = "0.0.1a"
+GITHUB = "https://github.com/vlntnwbr/ssdk"
+
+
+def get_entrypoint(name: str, function: FunctionType) -> str:
+    """Return string for a named function entrypoint for setuptools."""
+    return "{}={}:{}".format(
+        name, function.__module__, function.__name__
+    )
 
 
 def open_local(filename: str, mode: str = "r") -> TextIO:
     """Open file in this directory."""
-
-    return open(path.join(HEREDIR, filename), mode)
+    return open(path.join(HEREDIR, filename), mode, encoding="utf-8")
 
 
 def execute_command(args: List[str]) -> List[str]:
     """Execute external command and return stdout as list of strings."""
-
     try:
-        process = subprocess.run(
+        process = subprocess.run(  # nosec
             args,
             capture_output=True,
             check=True,
@@ -50,51 +56,19 @@ def execute_command(args: List[str]) -> List[str]:
         return []
 
 
-def create_requirements_txt() -> None:
-    """Create file 'requirements.txt' from 'Pipfile.lock'."""
-
-    try:
-        with open_local("Pipfile.lock"):
-            pass
-    except FileNotFoundError:
-        return
-
-    pipenv_lines = execute_command(["pipenv", "lock", "-r"])
-    if not pipenv_lines:
-        return
-
-    lines = [line for line in pipenv_lines[1:] if line]
-    with open_local(REQUIREMENTS_TXT, "w") as req_file:
-        req_file.write("### DO NOT EDIT! This file was generated.\n")
-        req_file.write("\n".join(lines))
-        req_file.write("\n")
-
-
-def read_requirements() -> List[str]:
-    """Read lines of requirements.txt and return them as list"""
-
-    with open_local(REQUIREMENTS_TXT) as file:
-        return [
-            line.strip() for line in file.readlines()
-            if line and not line.startswith("#") and not line.startswith("-i")
-        ]
-
-
 if __name__ == '__main__':
-    create_requirements_txt()
-    INSTALL_REQUIRES = read_requirements()
     README = open_local("README.md").read()
     setup(
         name=PROG,
-        description=MAIN_DESC,
+        description=DESC,
         long_description=README,
         long_description_content_type="text/markdown",
         version=VERSION,
         packages=find_packages(),
         include_package_data=True,
-        python_requires=">=3.8",
-        install_requires=INSTALL_REQUIRES,
-        license="GNU GPLv3",
+        platforms="windows",
+        python_requires=">=3.9",
+        license="EUPL",
         url=GITHUB,
         author="Valentin Weber",
         author_email="dev@vweber.eu",
@@ -102,18 +76,18 @@ if __name__ == '__main__':
         maintainer_email="dev@vweber.eu",
         project_urls={"Bug Tracker": GITHUB + "/issues?q=label%3bug"},
         entry_points={'console_scripts': [
-            MAIN_NAME + " = hanser_py_library.entrypoints.hanser:main"
+            get_entrypoint(SSDK_LIB, lib.main)
         ]},
         classifiers=[
-            "Development Status :: 4 - Beta",
+            "Development Status :: 1 - Planning",
             "Environment :: Console",
-            "Intended Audience :: Education",
-            "Intended Audience :: Science/Research",
-            "License :: OSI Approved :: GNU Affero General Public License v3",
-            "Operating System :: OS Independent",
+            "Intended Audience :: End Users/Desktop",
+            "Intended Audience :: Other Audience",
+            "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",  # noqa pylint: disable=line-too-long
+            "Operating System :: Microsoft :: Windows :: Windows 10",
             "Programming Language :: Python :: 3 :: Only",
-            "Topic :: Education",
-            "Topic :: Scientific/Engineering",
+            "Topic :: Desktop Environment :: File Managers",
+            "Topic :: Games/Entertainment",
             "Topic :: Utilities"
         ]
     )
