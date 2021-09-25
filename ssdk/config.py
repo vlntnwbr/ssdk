@@ -16,8 +16,8 @@
 import os
 from typing import IO, List, Union
 
-from .models import SteamLibrary
-from .utils import get_abspath
+from .core.models import SteamLibrary
+from .core.utils import get_abspath
 
 CONFIG_PREFIX = """\
 ##

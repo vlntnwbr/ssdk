@@ -18,7 +18,7 @@ import os
 import sys
 
 from . import SSDK_MAIN, SSDK_LIB
-from ..core.config import Config, ConfigFileError
+from ..config import Config, ConfigFileError
 from ..core.utils import OneLineHelpFormatter
 
 
