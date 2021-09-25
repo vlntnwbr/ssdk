@@ -13,6 +13,7 @@
 
 # Directories
 /.vscode/
+/.test_manifests/
 /.conf/
 **/dist/
 **/venv/
