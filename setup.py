@@ -30,8 +30,8 @@ VERSION = "0.0.1a"
 GITHUB = "https://github.com/vlntnwbr/ssdk"
 
 
-def get_entrypoint(name: str, function: FunctionType) -> str:
-    """Return string for a named function entrypoint for setuptools."""
+def get_entry_point(name: str, function: FunctionType) -> str:
+    """Return string for a named function entry point for setuptools."""
     return "{}={}:{}".format(
         name, function.__module__, function.__name__
     )
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         maintainer_email="dev@vweber.eu",
         project_urls={"Bug Tracker": GITHUB + "/issues?q=label%3bug"},
         entry_points={'console_scripts': [
-            get_entrypoint(SSDK_LIB, lib.main)
+            get_entry_point(SSDK_LIB, lib.main)
         ]},
         classifiers=[
             "Development Status :: 1 - Planning",

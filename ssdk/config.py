@@ -33,11 +33,11 @@ CONFIG_PREFIX = """\
 
 
 class ConfigFileError(Exception):
-    """Exception for interacting with config file."""
+    """Exception for errors during config file interaction."""
 
 
 class Config:
-    """Config Handler."""
+    """Handler for interacting with files listing Steam Libraries."""
 
     def __init__(self, file: str) -> None:
         """Initialize handler for given config file."""

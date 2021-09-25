@@ -11,7 +11,7 @@
 #   official translations of the licence in another language of the EU.
 ##
 
-"""Parser and entrypoint for ssdk lib."""
+"""Parser and entry point for ssdk-lib."""
 
 import argparse
 import os
