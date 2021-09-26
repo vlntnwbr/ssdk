@@ -11,6 +11,5 @@
 #   official translations of the licence in another language of the EU.
 ##
 
-include requirements.txt
 include README.md
 include LICENSE
