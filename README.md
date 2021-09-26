@@ -10,8 +10,14 @@ writing, removing, adding and listing all Steam Library Folder(s) whose games
 are affected by the main tool.
 
 ## Installation
-...
-
+Install using pip:
+```
+pip install steam-scheduled-download-killer
+```
+Recommended install using [pipx][pipx]
+```
+pipx install steam-scheduled-download-killer
+```
 ## Entry Point: ssdk
 ```
 usage: ssdk [-h] [-c CONFIG] [--update-priority PRIO]
@@ -57,3 +63,5 @@ allowed commands:
 
 [toc-ep-ssdk]: #entry-point-ssdk
 [toc-ep-ssdk-lib]: #entry-point-ssdk-lib
+
+[pipx]: https://pypi.org/project/pipx/

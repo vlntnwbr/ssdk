@@ -26,7 +26,7 @@ HEREDIR = path.abspath(path.dirname(__file__))
 
 PROG = "steam-scheduled-download-killer"
 DESC = "Set update priority for all Steam games to avoid scheduled downloads."
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 GITHUB = "https://github.com/vlntnwbr/ssdk"
 
 
