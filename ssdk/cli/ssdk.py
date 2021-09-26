@@ -43,6 +43,7 @@ class SsdkParser(BaseArgumentParser):
             help="value the update priority should be set to (default: 2)",
             type=int,
             choices=range(3),
+            default=2,
             metavar="PRIO"
         )
 
