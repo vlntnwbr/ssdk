@@ -52,3 +52,10 @@ def get_abspath(path: str) -> str:
         else:
             path = os.path.abspath(path)
     return os.path.normpath(path)
+
+
+def get_filepath_without_extension(filepath: str) -> str:
+    """Strip dirname and file extension from given filepath."""
+    if os.path.isdir(filepath):
+        raise ValueError("filepath points to directory", filepath)
+    return os.path.splitext(os.path.basename(filepath))[0]

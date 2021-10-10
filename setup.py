@@ -20,13 +20,13 @@ from typing import List, TextIO
 
 from setuptools import find_packages, setup
 
-from ssdk.cli import SSDK_LIB, SSDK_MAIN, lib, ssdk
+from ssdk.cli import SSDK_BG, SSDK_LIB, SSDK_MAIN, lib, ssdk
 
 HEREDIR = path.abspath(path.dirname(__file__))
 
 PROG = "steam-scheduled-download-killer"
 DESC = "Set update priority for all Steam games to avoid scheduled downloads."
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 GITHUB = "https://github.com/vlntnwbr/ssdk"
 
 
@@ -75,10 +75,13 @@ if __name__ == '__main__':
         maintainer="Valentin Weber",
         maintainer_email="dev@vweber.eu",
         project_urls={"Bug Tracker": GITHUB + "/issues?q=label%3bug"},
-        entry_points={'console_scripts': [
-            get_entry_point(SSDK_MAIN, ssdk.main),
-            get_entry_point(SSDK_LIB, lib.main)
-        ]},
+        entry_points={
+            "gui_scripts": [get_entry_point(SSDK_BG, ssdk.main)],
+            "console_scripts": [
+                get_entry_point(SSDK_MAIN, ssdk.main),
+                get_entry_point(SSDK_LIB, lib.main)
+            ]
+        },
         classifiers=[
             "Development Status :: 1 - Planning",
             "Environment :: Console",

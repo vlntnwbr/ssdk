@@ -15,10 +15,10 @@
 
 import sys
 
-from . import SSDK_MAIN, SSDK_LIB
+from . import SSDK_MAIN, SSDK_BG, SSDK_LIB
 from ..config import Config, ConfigFileError
 from ..manifest import ManifestFileError, ManifestHandler, ManifestKeyError
-from ..core.utils import BaseArgumentParser
+from ..core.utils import BaseArgumentParser, get_filepath_without_extension
 
 
 class SsdkParser(BaseArgumentParser):
@@ -36,7 +36,9 @@ class SsdkParser(BaseArgumentParser):
             "Ensure all Steam Games have high priority auto updates.\n"
             f"Manage Steam Library Folder(s) with entry point '{SSDK_LIB}'"
         )
-        super().__init__(SSDK_MAIN, desc, self.get_epilog())
+        entrypoint = get_filepath_without_extension(sys.argv[0])
+        prog = SSDK_BG if entrypoint == SSDK_BG else SSDK_MAIN
+        super().__init__(prog, desc, self.get_epilog())
 
         self.add_argument(
             "--update-priority",
@@ -92,4 +94,5 @@ def main() -> None:
 
 
 if __name__ == '__main__':
+    # sys.argv[0] = sys.argv[0].replace("ssdk.py", SSDK_BG + ".py")
     main()

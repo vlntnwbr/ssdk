@@ -14,4 +14,5 @@
 """Command line interface for steam-scheduled-download-killer."""
 
 SSDK_MAIN = "ssdk"
+SSDK_BG = SSDK_MAIN + "-background"
 SSDK_LIB = SSDK_MAIN + "-lib"

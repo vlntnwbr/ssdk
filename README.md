@@ -36,6 +36,10 @@ priority values:
   2                           high priority - always auto-update this game before others
 ```
 
+**NOTE:** If you want to run the programm without a console window opening
+(e.g. when running from Task Scheduler) use the `ssdk-background` executable.
+It behaves the same as the `ssdk` entry point described above. 
+
 ## Entry Point: ssdk-lib
 ```
 usage: ssdk-lib [-h] [-c CONFIG] [--ignore-existing] COMMAND [LIBRARY ...]
